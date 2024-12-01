@@ -1,7 +1,22 @@
 {% extends 'blogging/base.html' %}
 {% block extrastyle %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css"
-      rel="stylesheet"/>
+<!-- Alternative or custom CSS for Markdown -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css" rel="stylesheet"/>
+<style>
+    /* Optional inline styles for form layout */
+    .form-horizontal .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .form-horizontal .input-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .form-horizontal legend {
+        font-size: 1.75rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+</style>
 {% endblock extrastyle %}
 {% block main %}
 <form class="form-horizontal" action="{{url_for('blogging.editor', post_id=post_id or None)}}" method="POST">
@@ -58,10 +73,15 @@
 {% endblock main %}
 
 {% block extrajs %}
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.1/marked.min.js">
-    </script>
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js">
-    </script>
- {% endblock extrajs %}
+<!-- Markdown Editor Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css" rel="stylesheet">
+<script>
+    // Initialize SimpleMDE Markdown Editor
+    new SimpleMDE({
+        element: document.querySelector(".markdown-area"),
+        spellChecker: false,
+        toolbar: ["bold", "italic", "heading", "|", "unordered-list", "ordered-list", "|", "link", "preview"],
+    });
+</script>
+{% endblock extrajs %}

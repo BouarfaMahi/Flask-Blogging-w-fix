@@ -5,10 +5,112 @@
     {% block meta %}
     {% endblock meta %}
     {% block style %}
-       <link href="https://www.quantiota.net/static/css/style.css" rel="stylesheet"/>
-   <script src="https://www.quantiota.net/static/js/703e23c9-lazysizes-noscript-native-loading.5.1.2.min.js" defer></script>
- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa; /* Light grey background */
+            color: #343a40; /* Dark grey text */
+            padding-top: 60px; /* Offset for fixed navbar */
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #007bff; /* Blue background */
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .navbar-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .navbar-toggle span {
+            background-color: white;
+            height: 2px;
+            width: 25px;
+            margin: 3px 0;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar a:hover {
+            color: #ffc107; /* Yellow on hover */
+        }
+
+        /* Responsive Navbar */
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .navbar-menu.active {
+                display: flex;
+            }
+
+            .navbar-toggle {
+                display: flex;
+            }
+        }
+
+        /* Alerts */
+        .alert {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #ffdddd; /* Light red */
+            color: #900; /* Dark red */
+        }
+
+        /* Layout */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #343a40; /* Dark grey */
+            color: white;
+        }
+    </style>
     {% endblock style %}
     {% block extrastyle %}
     {% endblock extrastyle %}
@@ -19,65 +121,58 @@
 </head>
 <body>
 
-   {% include "blogging/header.html" %}
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="{{ config.BLOGGING_BRANDURL or '/' }}" class="navbar-brand">
+            {{ config.BLOGGING_SITENAME or 'Flask-Blogging' }}
+        </a>
+        <div class="navbar-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
 
-    <!-- main content -->
-     <div class="container">
-         {% block message %}
-         {% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- Main Content -->
+    <div class="container">
+        {% block message %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                    <div id="alert_div" class="alert alert-{{category}} alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        {{ message }}
-                    </div>
-                    </div>
-                 </div>
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
                 {% endfor %}
             {% endif %}
-         {% endwith %}
+        {% endwith %}
+        {% endblock %}
+        
+        {% block main %}
+        {% endblock main %}
+        
+        {% block extramain %}
+        {% endblock extramain %}
+    </div>
 
-         {% endblock %}
-         {% block main %}
-         {% endblock main %}
-         {% block extramain %}
-         {% endblock extramain %}
-     </div>
+    <!-- Footer -->
+    <footer>
+        &copy; {{ config.BLOGGING_SITENAME or 'Flask-Blogging'}} - All rights reserved.
+    </footer>
+
     {% include "blogging/analytics.html" %}
-
-    {% include "blogging/footer.html" %}
-        <script src="src="https://www.quantiota.net/static/js/thene.js"></script>
-        <script defer src="https://www.quantiota.net/static/js/buttons.js"></script>
-        <script src="https://www.quantiota.net/static/js/scripts.js"></script>
-   
-
-    
     {% block js %}
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          "HTML-CSS": {
-          styles: {
-          ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
-          },
-          tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
-          });
-    </script>
-
     <script>
-        $(document).ready(function(){
-            $("#alert_div").fadeTo(3000, 500).slideUp(500, function(){
-               $("#alert_div").slideUp(500);
-                });
-        })
+        // JavaScript for responsive navbar
+        function toggleMenu() {
+            const menu = document.querySelector('.navbar-menu');
+            menu.classList.toggle('active');
+        }
     </script>
-
     {% endblock js %}
     {% block extrajs %}
     {% endblock extrajs %}

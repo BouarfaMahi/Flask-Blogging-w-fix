@@ -1,11 +1,78 @@
 {% extends 'blogging/base.html' %}
+
 {% block extrastyle %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css"
-      rel="stylesheet"/>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .form-horizontal {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .form-horizontal legend {
+        text-align: center;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-horizontal label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-horizontal input,
+    .form-horizontal textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1em;
+    }
+
+    .form-horizontal .help-block {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 5px;
+    }
+
+    .form-horizontal a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .form-horizontal a:hover {
+        text-decoration: underline;
+    }
+
+    .form-horizontal .btn {
+        padding: 10px 15px;
+        font-size: 1em;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .form-horizontal .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
 {% endblock extrastyle %}
+
 {% block main %}
 <form class="form-horizontal" action="{{url_for('blogging.editor', post_id=post_id or None)}}" method="POST">
-
     {{ form.hidden_tag() }}
 
     <fieldset>
@@ -13,55 +80,42 @@
         <legend>Blog Editor</legend>
         <!-- Text input-->
         <div class="form-group">
-            <label class="control-label col-md-offset-2  control-label input-md" for="title">
-                Title
-            </label>
-            <div class="input-group col-md-8 col-md-offset-2">
-                {{form.title(placeholder="Title", id="title", class="form-control", required="" )}}
-            </div>
+            <label for="title">Title</label>
+            {{form.title(placeholder="Title", id="title", required="")}}
         </div>
 
+        <!-- Blog Content -->
         <div class="form-group">
-            <div class="input-group col-md-8 col-md-offset-2">
-                {{form.text(placeholder="Blog text", required="", data_provide="markdown", rows="16")}}
-                <span class="help-block">
-                    Learn more about <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">MarkDown</a><br>
-                    {% if config.BLOGGING_ALLOW_FILEUPLOAD %}
-                        <a target="_blank" href="{{ url_for("flask_fileupload.upload") }}">Upload new File</a>
-                    {% endif %}
-                </span>
-            </div>
+            <label for="text">Content</label>
+            {{form.text(placeholder="Blog text", required="", data_provide="markdown", rows="16")}}
+            <span class="help-block">
+                Learn more about <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">Markdown</a><br>
+                {% if config.BLOGGING_ALLOW_FILEUPLOAD %}
+                    <a target="_blank" href="{{ url_for("flask_fileupload.upload") }}">Upload new File</a>
+                {% endif %}
+            </span>
         </div>
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="col-md-offset-2 control-label" for="tags">Tags</label>
 
-            <div class="input-group col-md-8 col-md-offset-2">
-                {{form.tags(id="tags", placeholder="Comma separated tags", class="form-control input-md", required="")}}
-            </div>
-        </div>
-        <!-- draft input-->
-        <!--div class="form-group">
-            <div class="col-md-offset-2">
-                <label>
-                    {{form.draft(id="draft")}} draft?
-                </label>
-            </div>
-        </div-->
+        <!-- Tags -->
         <div class="form-group">
-            <div class="col-md-offset-2">
-                {{ form.submit(id="submit", class="btn btn-primary") }}
-            </div>
+            <label for="tags">Tags</label>
+            {{form.tags(id="tags", placeholder="Comma separated tags", required="")}}
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+            {{ form.submit(id="submit", class="btn") }}
         </div>
     </fieldset>
 </form>
 {% endblock main %}
 
 {% block extrajs %}
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.1/marked.min.js">
-    </script>
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js">
-    </script>
- {% endblock extrajs %}
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.1/marked.min.js">
+</script>
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js">
+</script>
+{% endblock extrajs %}
+

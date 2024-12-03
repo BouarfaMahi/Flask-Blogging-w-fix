@@ -5,40 +5,153 @@
     {% block meta %}
     {% endblock meta %}
     {% block style %}
- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"/>
- <link href="/static/css/style.css" rel="stylesheet"/>
-<script src="/static/js/703e23c9-lazysizes-noscript-native-loading.5.1.2.min.js" defer></script>
+    <link rel="stylesheet" href="/static/css/style.css"/>
+    <script src="/static/js/703e23c9-lazysizes-noscript-native-loading.5.1.2.min.js" defer></script>
     {% endblock style %}
     {% block extrastyle %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-dismissible .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+
+        .form-horizontal {
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .help-block {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
     {% endblock extrastyle %}
     <title>
         {% block title %}
+        Blog Editor
         {% endblock title %}
     </title>
 </head>
 <body>
    {% include "blogging/header.html" %}
-    <!-- main content -->
+    <!-- Main Content -->
    <div class="container">
          {% block message %}
          {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                    <div id="alert_div" class="alert alert-{{category}} alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        {{ message }}
-                    </div>
-                    </div>
-                 </div>
+                <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ message }}
+                </div>
                 {% endfor %}
             {% endif %}
          {% endwith %}
          {% endblock %}
          {% block main %}
+         <form class="form-horizontal" action="{{ url_for('blogging.editor', post_id=post_id or None) }}" method="POST">
+            {{ form.hidden_tag() }}
+            <fieldset>
+                <legend class="text-center">Blog Editor</legend>
+
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    {{ form.title(placeholder="Enter the title here", id="title", required="") }}
+                </div>
+
+                <!-- Content -->
+                <div class="form-group">
+                    <label for="text">Content</label>
+                    {{ form.text(placeholder="Write your content here", rows="10", required="") }}
+                    <span class="help-block">
+                        You can use <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">Markdown</a> syntax.
+                    </span>
+                </div>
+
+                <!-- Tags -->
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    {{ form.tags(placeholder="Comma-separated tags", id="tags", required="") }}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group text-center">
+                    {{ form.submit(class="btn") }}
+                </div>
+            </fieldset>
+        </form>
          {% endblock main %}
          {% block extramain %}
          {% endblock extramain %}
@@ -48,26 +161,19 @@
         <script src="/static/js/theme.js"></script>
         <script defer src="/static/js/buttons.js"></script>
         <script src="/static/js/scripts.js"></script>
-
     {% block js %}
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          "HTML-CSS": {
-          styles: {
-          ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
-          },
-          tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
-          });
-    </script>
+    <script src="/static/js/main.js"></script>
     <script>
-        $(document).ready(function(){
-            $("#alert_div").fadeTo(3000, 500).slideUp(500, function(){
-               $("#alert_div").slideUp(500);
-                });
-        })
+        document.addEventListener("DOMContentLoaded", function() {
+            const alertDiv = document.getElementById("alert_div");
+            if (alertDiv) {
+                setTimeout(() => {
+                    alertDiv.style.transition = "opacity 0.5s";
+                    alertDiv.style.opacity = "0";
+                    setTimeout(() => alertDiv.remove(), 500);
+                }, 3000);
+            }
+        });
     </script>
     {% endblock js %}
     {% block extrajs %}

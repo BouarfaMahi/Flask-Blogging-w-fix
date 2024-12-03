@@ -19,7 +19,7 @@
 <body>
    {% include "blogging/header.html" %}
     <!-- main content -->
-   <div class="container" style="width: 100%; min-height: 100vh; background-color: #f5f5f5; padding: 20px; box-sizing: border-box;">
+   <div class="container">
          {% block message %}
          {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

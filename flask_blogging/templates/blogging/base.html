@@ -1,68 +1,76 @@
-{% extends 'blogging/base.html' %}
-{% block extrastyle %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css"
-      rel="stylesheet"/>
-{% endblock extrastyle %}
-{% block main %}
-<form class="form-horizontal" action="{{url_for('blogging.editor', post_id=post_id or None)}}" method="POST">
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    {% block meta %}
+    {% endblock meta %}
+    {% block style %}
+ <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"/>
+ <link href="/static/css/style.css" rel="stylesheet"/>
+<script src="/static/js/703e23c9-lazysizes-noscript-native-loading.5.1.2.min.js" defer></script>
+    {% endblock style %}
+    {% block extrastyle %}
+    {% endblock extrastyle %}
+    <title>
+        {% block title %}
+        {% endblock title %}
+    </title>
+</head>
+<body>
+   {% include "blogging/header.html" %}
+    <!-- main content -->
+   <div class="container">
+         {% block message %}
+         {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                    <div id="alert_div" class="alert alert-{{category}} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                    </div>
+                 </div>
+                {% endfor %}
+            {% endif %}
+         {% endwith %}
+         {% endblock %}
+         {% block main %}
+         {% endblock main %}
+         {% block extramain %}
+         {% endblock extramain %}
+     </div>
+    {% include "blogging/analytics.html" %}
+    {% include "blogging/footer.html" %}
+        <script src="/static/js/theme.js"></script>
+        <script defer src="/static/js/buttons.js"></script>
+        <script src="/static/js/scripts.js"></script>
 
-    {{ form.hidden_tag() }}
-
-    <fieldset>
-        <!-- Form Name -->
-        <legend>Blog Editor</legend>
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="control-label col-md-offset-2  control-label input-md" for="title">
-                Title
-            </label>
-            <div class="input-group col-md-8 col-md-offset-2">
-                {{form.title(placeholder="Title", id="title", class="form-control", required="" )}}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="input-group col-md-8 col-md-offset-2">
-                {{form.text(placeholder="Blog text", required="", data_provide="markdown", rows="16")}}
-                <span class="help-block">
-                    Learn more about <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">MarkDown</a><br>
-                    {% if config.BLOGGING_ALLOW_FILEUPLOAD %}
-                        <a target="_blank" href="{{ url_for("flask_fileupload.upload") }}">Upload new File</a>
-                    {% endif %}
-                </span>
-            </div>
-        </div>
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="col-md-offset-2 control-label" for="tags">Tags</label>
-
-            <div class="input-group col-md-8 col-md-offset-2">
-                {{form.tags(id="tags", placeholder="Comma separated tags", class="form-control input-md", required="")}}
-            </div>
-        </div>
-        <!-- draft input-->
-        <!--div class="form-group">
-            <div class="col-md-offset-2">
-                <label>
-                    {{form.draft(id="draft")}} draft?
-                </label>
-            </div>
-        </div-->
-        <div class="form-group">
-            <div class="col-md-offset-2">
-                {{ form.submit(id="submit", class="btn btn-primary") }}
-            </div>
-        </div>
-    </fieldset>
-</form>
-{% endblock main %}
-
-{% block extrajs %}
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.5.1/marked.min.js">
+    {% block js %}
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+          "HTML-CSS": {
+          styles: {
+          ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+          },
+          tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+          });
     </script>
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js">
+    <script>
+        $(document).ready(function(){
+            $("#alert_div").fadeTo(3000, 500).slideUp(500, function(){
+               $("#alert_div").slideUp(500);
+                });
+        })
     </script>
- {% endblock extrajs %}
-
+    {% endblock js %}
+    {% block extrajs %}
+    {% endblock extrajs %}
+</body>
+</html>

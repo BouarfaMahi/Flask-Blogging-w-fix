@@ -21,6 +21,8 @@
    {% include "blogging/header.html" %}
     <!-- main content -->
 <div class="p-strip" style="min-height: 100vh;">
+<div class="row u-position">
+    
          {% block message %}
          {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -44,6 +46,7 @@
          {% block extramain %}
          {% endblock extramain %}
 </div>
+   </div> 
     {% include "blogging/analytics.html" %}
     {% include "blogging/footer.html" %}
         <script src="/static/js/theme.js"></script>

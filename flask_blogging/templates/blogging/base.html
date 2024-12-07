@@ -21,7 +21,7 @@
    {% include "blogging/header.html" %}
     <!-- main content -->
 
-     <div class="container" style="height: 100vh;">
+  <div class="container" style="min-height: 100vh;" >
          {% block message %}
          {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

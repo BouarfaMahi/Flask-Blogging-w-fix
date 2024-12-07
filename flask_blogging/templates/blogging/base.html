@@ -20,7 +20,7 @@
 <body>
    {% include "blogging/header.html" %}
     <!-- main content -->
- <div  class="p-strip">
+
          {% block message %}
          {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -43,7 +43,7 @@
          {% endblock main %}
          {% block extramain %}
          {% endblock extramain %}
-     </div>
+
     {% include "blogging/analytics.html" %}
     {% include "blogging/footer.html" %}
         <script src="/static/js/theme.js"></script>

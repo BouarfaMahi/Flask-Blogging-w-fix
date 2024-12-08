@@ -41,7 +41,7 @@ Blog Posts
    
         <!-- post tags-->
         {% if post.tags %}
-            <span class="glyphicon glyphicon-tags">&nbsp;&nbsp;
+            <span class="glyphicon glyphicon-tags">
             {% for tag in post.tags %}
                 
                     <a href="{{ url_for('blogging.posts_by_tag', tag=tag.lower(), count=10, offset=0) }}">

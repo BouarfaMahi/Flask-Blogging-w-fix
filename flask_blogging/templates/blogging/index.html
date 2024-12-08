@@ -39,9 +39,10 @@ Blog Posts
 
        </div>
 
+    </div>
      <!-- post tags-->
         {% if post.tags %}
-            <span class="glyphicon glyphicon-tags"></span>
+            <span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;
             {% for tag in post.tags %}
                 <span>
                     <a href="{{ url_for('blogging.posts_by_tag', tag=tag.lower(), count=10, offset=0) }}">
@@ -51,8 +52,6 @@ Blog Posts
             {% endfor %}
             <br> 
         {% endif %}
-
-    </div>
      <div class="u-fixed-width">
           <hr>
        </div>

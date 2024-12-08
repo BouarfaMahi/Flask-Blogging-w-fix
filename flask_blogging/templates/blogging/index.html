@@ -21,16 +21,16 @@ Blog Posts
     {% for post in posts %}
 
 
-<div id="pricing" class="p-strip">
+<div class="p-strip">
     <div class="row u-equal-height">
-       <div class="col-6 col-medium-3">
+       <div class="col-4 col-medium-3">
         <a href="{{ post.url }}">
-            <h2>{{ post.title }}</h2>
+            <h3>{{ post.title }}</h3>
         </a>
         <p>Posted by <a href="{{ url_for('blogging.posts_by_author', user_id=post.user_id)}}"><em>{{post.user_name}}</em></a>
         on {{post.post_date.strftime('%d %b, %Y')}}</p>
        </div>
-       <div class="col-6 col-medium-3">
+       <div class="col-4 col-medium-3">
             {% if post.meta.images %}
                 <img src="{{ post.meta.images[0] }}" alt="Post Image" style="max-width: 150px; height: auto; object-fit: cover;">
             {% endif %}

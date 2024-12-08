@@ -20,7 +20,7 @@ Blog Posts
 
     {% for post in posts %}
 
-
+<div class="p-strip">
 
     <div class="row u-equal-height">
        <div class="col-5 col-medium-3">
@@ -37,7 +37,9 @@ Blog Posts
           
           </div>
 
-        
+
+       </div>
+</div>
      <!-- post tags-->
         {% if post.tags %}
             <span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;
@@ -50,8 +52,6 @@ Blog Posts
             {% endfor %}
             <br> 
         {% endif %}
-       </div>
-
 
     </div>
      <div class="u-fixed-width">

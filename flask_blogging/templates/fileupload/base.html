@@ -16,7 +16,7 @@
     </title>
 </head>
 <body>
-
+   {% include "blogging/header.html" %}
     <!-- navbar header -->
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -60,6 +60,7 @@
          {% endblock extramain %}
      </div>
     {% include "blogging/analytics.html" %}
+        {% include "blogging/footer.html" %}
     {% block js %}
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>

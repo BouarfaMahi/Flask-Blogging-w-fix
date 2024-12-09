@@ -2,6 +2,12 @@
 {% block meta %}
     {% include 'blogging/metatags.html' %}
 {% endblock meta %}
+
+{% block title %}
+    {{post.title}}
+{% endblock title %}
+
+{% block main %}
   <div class="col-12">
           <h2>Blog</h2>
        </div>
@@ -10,12 +16,6 @@
        </div>
 
 
-
-{% block title %}
-    {{post.title}}
-{% endblock title %}
-
-{% block main %}
 {% if meta.is_user_blogger %}
     <div class="modal fade" id="confirmModal" >
         <div class="modal-dialog">
